@@ -12,9 +12,11 @@ export default function Calculo() {
   const [salario, setSalario] = useState("");
   const [show, setShow] = useState(true);
 
+  const dollar = 6.0; // Valor do dólar para conversão, pode ser dinâmico
   const custoFirewall = [
-    { nome: "Fortinet 40F", custo: 690, funcionarios: 50 },
-    { nome: "Sophos 107", custo: 2100, funcionarios: 100 },
+    { nome: "Fortigate 40F", custo: 473.75, funcionarios: 50 },
+    { nome: "Fortigate 60F", custo: 665.17, funcionarios: 150 },
+    { nome: "Fortigate 80F", custo: 1464.32, funcionarios: 300 },
   ];
 
   const valorHora =
@@ -112,13 +114,13 @@ export default function Calculo() {
         </Transition>
       </div>
       <div className="w-full max-w-3xl mx-auto py-10 px-6 rounded-2xl shadow-xl bg-slate-800 border border-slate-700 mt-5">
-        {funcionarios && custoFirewall.length > 0 ? (
+        {funcionarios && salario && custoFirewall.length > 0 ? (
           (() => {
             const firewallSelecionado =
               custoFirewall.find((fw) => funcionarios <= fw.funcionarios) ||
               custoFirewall[custoFirewall.length - 1];
 
-            const investimento = firewallSelecionado.custo;
+            const investimento = firewallSelecionado.custo * dollar;
             const economiaDiaria = semanal / 5;
             const economiaSemanal = semanal - (investimento / 52)
             const economiaMensal = mensal - (investimento / 12);
@@ -130,7 +132,7 @@ export default function Calculo() {
                   Firewall recomendado: {firewallSelecionado.nome}
                 </h2>
                 <h2 className="text-xl font-bold text-red-400 mb-2">
-                  Investimento: {formatBRL(investimento)}
+                  Investimento: {formatBRL(investimento)}<br/>
                 </h2>
                 <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                   <EconomyCard
